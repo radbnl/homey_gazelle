@@ -1,0 +1,11 @@
+{
+  "type": "boolean",
+  "title": {
+    "en": "Charging",
+    "nl": "Opladen"
+  },
+  "getable": true,
+  "setable": false,
+  "icon": "/assets/icons/charging.svg",
+  "insights": true
+}

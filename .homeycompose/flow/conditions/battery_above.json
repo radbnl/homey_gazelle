@@ -1,0 +1,26 @@
+{
+  "title": {
+    "en": "Battery is above [[percentage]]%",
+    "nl": "Batterij is boven [[percentage]]%"
+  },
+  "titleFormatted": {
+    "en": "Battery is above [[percentage]]%",
+    "nl": "Batterij is boven [[percentage]]%"
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=bike"
+    },
+    {
+      "type": "number",
+      "name": "percentage",
+      "min": 0,
+      "max": 100,
+      "placeholder": {
+        "en": "Percentage"
+      }
+    }
+  ]
+}

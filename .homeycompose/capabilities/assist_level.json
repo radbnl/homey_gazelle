@@ -1,0 +1,12 @@
+{
+  "type": "number",
+  "title": {
+    "en": "Assist Level",
+    "nl": "Ondersteuning"
+  },
+  "min": 0,
+  "max": 5,
+  "getable": true,
+  "setable": false,
+  "icon": "/assets/icons/assist.svg"
+}

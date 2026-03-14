@@ -1,0 +1,14 @@
+{
+  "type": "number",
+  "title": {
+    "en": "Odometer",
+    "nl": "Kilometerteller"
+  },
+  "units": {
+    "en": "km"
+  },
+  "getable": true,
+  "setable": false,
+  "icon": "/assets/icons/odometer.svg",
+  "insights": true
+}

@@ -1,0 +1,9 @@
+{
+  "type": "number",
+  "title": {
+    "en": "Longitude",
+    "nl": "Lengtegraad"
+  },
+  "getable": true,
+  "setable": false
+}

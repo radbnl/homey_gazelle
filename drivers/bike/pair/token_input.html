@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      padding: 20px;
+      background: #f5f5f5;
+      margin: 0;
+    }
+    h1 {
+      font-size: 22px;
+      color: #00A651;
+      margin-bottom: 15px;
+    }
+    .card {
+      background: #fff;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 15px;
+    }
+    button {
+      background: #00A651;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 10px;
+    }
+    button:active {
+      background: #008c44;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 14px;
+      box-sizing: border-box;
+      margin-top: 8px;
+    }
+    textarea {
+      height: 80px;
+      font-family: monospace;
+      font-size: 12px;
+    }
+    .error {
+      color: #c00;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+    .info {
+      background: #fff3e0;
+      padding: 10px;
+      border-radius: 6px;
+      color: #e65100;
+      font-size: 13px;
+      margin: 10px 0;
+    }
+    .link-box {
+      background: #e3f2fd;
+      padding: 10px;
+      border-radius: 6px;
+      margin: 10px 0;
+      word-break: break-all;
+      font-size: 11px;
+    }
+    a {
+      color: #1565c0;
+    }
+    label {
+      font-weight: 500;
+      display: block;
+      margin-top: 15px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Gazelle Connected</h1>
+
+  <div class="card">
+    <p><strong>Stap 1:</strong> Klik om in te loggen</p>
+    <button id="loginBtn">Inloggen met Gazelle</button>
+
+    <div id="linkBox" class="link-box" style="display:none;">
+      <strong>Of kopieer deze link naar je browser:</strong><br><br>
+      <a id="authLink" href="#" target="_blank">Klik hier om te openen</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <p><strong>Stap 2:</strong> Plak de callback URL</p>
+    <div class="info">
+      Na het inloggen kom je op een pagina (mogelijk met fout). Kopieer de volledige URL uit je adresbalk.
+    </div>
+    <input type="text" id="callbackUrl" placeholder="https://consumer.login.pon.bike/ios/...?code=...">
+
+    <button id="submitBtn">Doorgaan</button>
+    <p id="error" class="error"></p>
+  </div>
+
+  <div class="card" style="background:#f9f9f9;">
+    <p style="font-size:13px; color:#666; margin:0;">
+      <strong>Alternatief:</strong> Heb je al een token JSON?
+      <a href="#" id="toggleManual">Klik hier</a>
+    </p>
+    <div id="manualSection" style="display:none; margin-top:10px;">
+      <textarea id="manualToken" placeholder='{"access_token":"...","refresh_token":"..."}'></textarea>
+      <button id="manualBtn">Token gebruiken</button>
+    </div>
+  </div>
+
+  <script>
+    var AUTH0_DOMAIN = 'consumer.login.pon.bike';
+    var AUTH0_CLIENT_ID = 'AdsjTeHU8eK6NPRqrgKUZmpEaG3NkTbu';
+    var AUTH0_REDIRECT_URI = 'https://consumer.login.pon.bike/ios/nl.gazelle.gazelle-connect/callback';
+    var AUTH0_AUDIENCE = 'https://app.connected.pon.bike/';
+    var codeVerifier = '';
+
+    function randomString(len) {
+      var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+      var result = '';
+      for (var i = 0; i < len; i++) {
+        result += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      return result;
+    }
+
+    function sha256(str) {
+      var buffer = new TextEncoder().encode(str);
+      return crypto.subtle.digest('SHA-256', buffer);
+    }
+
+    function base64url(buffer) {
+      var bytes = new Uint8Array(buffer);
+      var binary = '';
+      for (var i = 0; i < bytes.length; i++) {
+        binary += String.fromCharCode(bytes[i]);
+      }
+      return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+    }
+
+    document.getElementById('loginBtn').onclick = function() {
+      codeVerifier = randomString(64);
+
+      sha256(codeVerifier).then(function(hash) {
+        var codeChallenge = base64url(hash);
+
+        var params = new URLSearchParams({
+          response_type: 'code',
+          client_id: AUTH0_CLIENT_ID,
+          redirect_uri: AUTH0_REDIRECT_URI,
+          scope: 'openid profile email offline_access',
+          audience: AUTH0_AUDIENCE,
+          code_challenge: codeChallenge,
+          code_challenge_method: 'S256',
+          state: randomString(16)
+        });
+
+        var authUrl = 'https://' + AUTH0_DOMAIN + '/authorize?' + params.toString();
+
+        // Show link
+        document.getElementById('authLink').href = authUrl;
+        document.getElementById('authLink').textContent = authUrl.substring(0, 60) + '...';
+        document.getElementById('linkBox').style.display = 'block';
+
+        // Try to open
+        try {
+          if (typeof Homey !== 'undefined' && Homey.openURL) {
+            Homey.openURL(authUrl);
+          } else {
+            window.open(authUrl, '_blank');
+          }
+        } catch(e) {
+          // Link is shown as fallback
+        }
+      });
+    };
+
+    document.getElementById('submitBtn').onclick = function() {
+      var url = document.getElementById('callbackUrl').value.trim();
+      var errorEl = document.getElementById('error');
+      errorEl.textContent = '';
+
+      if (!url) {
+        errorEl.textContent = 'Voer de callback URL in';
+        return;
+      }
+
+      var code;
+      try {
+        var parsed = new URL(url);
+        code = parsed.searchParams.get('code');
+      } catch(e) {
+        errorEl.textContent = 'Ongeldige URL';
+        return;
+      }
+
+      if (!code) {
+        errorEl.textContent = 'Geen code in URL gevonden';
+        return;
+      }
+
+      if (!codeVerifier) {
+        errorEl.textContent = 'Klik eerst op "Inloggen met Gazelle"';
+        return;
+      }
+
+      errorEl.textContent = 'Token ophalen...';
+      errorEl.style.color = '#1565c0';
+
+      fetch('https://' + AUTH0_DOMAIN + '/oauth/token', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          grant_type: 'authorization_code',
+          client_id: AUTH0_CLIENT_ID,
+          code: code,
+          redirect_uri: AUTH0_REDIRECT_URI,
+          code_verifier: codeVerifier
+        })
+      })
+      .then(function(res) { return res.json(); })
+      .then(function(tokens) {
+        if (tokens.error) {
+          throw new Error(tokens.error_description || tokens.error);
+        }
+        tokens.expires_at = Date.now() + (tokens.expires_in * 1000);
+        sendToHomey(tokens);
+      })
+      .catch(function(e) {
+        errorEl.textContent = 'Fout: ' + e.message;
+        errorEl.style.color = '#c00';
+      });
+    };
+
+    document.getElementById('toggleManual').onclick = function(e) {
+      e.preventDefault();
+      var section = document.getElementById('manualSection');
+      section.style.display = section.style.display === 'none' ? 'block' : 'none';
+    };
+
+    document.getElementById('manualBtn').onclick = function() {
+      var json = document.getElementById('manualToken').value.trim();
+      var errorEl = document.getElementById('error');
+
+      try {
+        var tokens = JSON.parse(json);
+        if (!tokens.access_token || !tokens.refresh_token) {
+          throw new Error('Moet access_token en refresh_token bevatten');
+        }
+        sendToHomey(tokens);
+      } catch(e) {
+        errorEl.textContent = 'Ongeldige JSON: ' + e.message;
+      }
+    };
+
+    function sendToHomey(tokens) {
+      Homey.emit('token', tokens, function(err) {
+        if (err) {
+          document.getElementById('error').textContent = err.message || 'Fout';
+          document.getElementById('error').style.color = '#c00';
+          return;
+        }
+        Homey.showView('list_devices');
+      });
+    }
+  </script>
+</body>
+</html>

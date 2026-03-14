@@ -1,0 +1,26 @@
+{
+  "id": "nl.radb.gazelle",
+  "version": "1.0.4",
+  "compatibility": ">=5.0.0",
+  "sdk": 3,
+  "brandColor": "#00A651",
+  "name": {
+    "en": "Gazelle Connected",
+    "nl": "Gazelle Connected"
+  },
+  "description": {
+    "en": "Monitor your Gazelle e-bike battery and location",
+    "nl": "Monitor je Gazelle e-bike batterij en locatie"
+  },
+  "category": [
+    "appliances"
+  ],
+  "images": {
+    "small": "/assets/images/small.png",
+    "large": "/assets/images/large.png",
+    "xlarge": "/assets/images/xlarge.png"
+  },
+  "author": {
+    "name": "Robert de Beurs"
+  }
+}

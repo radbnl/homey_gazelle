@@ -1,0 +1,7 @@
+{
+  "errors": {
+    "not_authenticated": "Niet geauthenticeerd. Koppel het apparaat opnieuw.",
+    "token_refresh_failed": "Authenticatie vernieuwen mislukt. Koppel het apparaat opnieuw.",
+    "unauthorized": "Authenticatie verlopen. Koppel het apparaat opnieuw."
+  }
+}

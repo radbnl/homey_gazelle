@@ -1,0 +1,271 @@
+{
+  "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
+  "id": "nl.radb.gazelle",
+  "version": "1.0.4",
+  "compatibility": ">=5.0.0",
+  "sdk": 3,
+  "brandColor": "#00A651",
+  "name": {
+    "en": "Gazelle Connected",
+    "nl": "Gazelle Connected"
+  },
+  "description": {
+    "en": "Monitor your Gazelle e-bike battery and location",
+    "nl": "Monitor je Gazelle e-bike batterij en locatie"
+  },
+  "category": [
+    "appliances"
+  ],
+  "images": {
+    "small": "/assets/images/small.png",
+    "large": "/assets/images/large.png",
+    "xlarge": "/assets/images/xlarge.png"
+  },
+  "author": {
+    "name": "Robert de Beurs"
+  },
+  "flow": {
+    "triggers": [
+      {
+        "title": {
+          "en": "Battery percentage changed",
+          "nl": "Batterij percentage veranderd"
+        },
+        "tokens": [
+          {
+            "name": "percentage",
+            "type": "number",
+            "title": {
+              "en": "Percentage",
+              "nl": "Percentage"
+            },
+            "example": 75
+          }
+        ],
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=bike"
+          }
+        ],
+        "id": "battery_changed"
+      },
+      {
+        "title": {
+          "en": "Battery low",
+          "nl": "Batterij bijna leeg"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=bike"
+          }
+        ],
+        "id": "battery_low"
+      },
+      {
+        "title": {
+          "en": "Charging started",
+          "nl": "Opladen gestart"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=bike"
+          }
+        ],
+        "id": "charging_started"
+      },
+      {
+        "title": {
+          "en": "Charging stopped",
+          "nl": "Opladen gestopt"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=bike"
+          }
+        ],
+        "id": "charging_stopped"
+      }
+    ],
+    "conditions": [
+      {
+        "title": {
+          "en": "Battery is above [[percentage]]%",
+          "nl": "Batterij is boven [[percentage]]%"
+        },
+        "titleFormatted": {
+          "en": "Battery is above [[percentage]]%",
+          "nl": "Batterij is boven [[percentage]]%"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=bike"
+          },
+          {
+            "type": "number",
+            "name": "percentage",
+            "min": 0,
+            "max": 100,
+            "placeholder": {
+              "en": "Percentage"
+            }
+          }
+        ],
+        "id": "battery_above"
+      },
+      {
+        "title": {
+          "en": "Bike !{{is|is not}} charging",
+          "nl": "Fiets !{{is|is niet}} aan het opladen"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=bike"
+          }
+        ],
+        "id": "is_charging"
+      }
+    ]
+  },
+  "drivers": [
+    {
+      "name": {
+        "en": "Gazelle E-Bike",
+        "nl": "Gazelle E-Bike"
+      },
+      "class": "other",
+      "energy": {
+        "batteries": [
+          "OTHER"
+        ]
+      },
+      "capabilities": [
+        "measure_battery",
+        "alarm_battery",
+        "meter_range",
+        "meter_odometer",
+        "charging_state",
+        "assist_level",
+        "location_latitude",
+        "location_longitude"
+      ],
+      "images": {
+        "small": "/drivers/bike/assets/images/small.png",
+        "large": "/drivers/bike/assets/images/large.png",
+        "xlarge": "/drivers/bike/assets/images/xlarge.png"
+      },
+      "pair": [
+        {
+          "id": "token_input"
+        },
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ],
+      "settings": [
+        {
+          "id": "poll_interval",
+          "type": "number",
+          "label": {
+            "en": "Update interval (minutes)",
+            "nl": "Update interval (minuten)"
+          },
+          "value": 15,
+          "min": 5,
+          "max": 60
+        }
+      ],
+      "id": "bike"
+    }
+  ],
+  "capabilities": {
+    "assist_level": {
+      "type": "number",
+      "title": {
+        "en": "Assist Level",
+        "nl": "Ondersteuning"
+      },
+      "min": 0,
+      "max": 5,
+      "getable": true,
+      "setable": false,
+      "icon": "/assets/icons/assist.svg"
+    },
+    "charging_state": {
+      "type": "boolean",
+      "title": {
+        "en": "Charging",
+        "nl": "Opladen"
+      },
+      "getable": true,
+      "setable": false,
+      "icon": "/assets/icons/charging.svg",
+      "insights": true
+    },
+    "location_latitude": {
+      "type": "number",
+      "title": {
+        "en": "Latitude",
+        "nl": "Breedtegraad"
+      },
+      "getable": true,
+      "setable": false
+    },
+    "location_longitude": {
+      "type": "number",
+      "title": {
+        "en": "Longitude",
+        "nl": "Lengtegraad"
+      },
+      "getable": true,
+      "setable": false
+    },
+    "meter_odometer": {
+      "type": "number",
+      "title": {
+        "en": "Odometer",
+        "nl": "Kilometerteller"
+      },
+      "units": {
+        "en": "km"
+      },
+      "getable": true,
+      "setable": false,
+      "icon": "/assets/icons/odometer.svg",
+      "insights": true
+    },
+    "meter_range": {
+      "type": "number",
+      "title": {
+        "en": "Range",
+        "nl": "Bereik"
+      },
+      "units": {
+        "en": "km"
+      },
+      "getable": true,
+      "setable": false,
+      "icon": "/assets/icons/range.svg",
+      "insights": true
+    }
+  }
+}

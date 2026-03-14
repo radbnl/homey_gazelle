@@ -1,0 +1,13 @@
+{
+  "title": {
+    "en": "Bike !{{is|is not}} charging",
+    "nl": "Fiets !{{is|is niet}} aan het opladen"
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=bike"
+    }
+  ]
+}

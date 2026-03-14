@@ -1,0 +1,22 @@
+{
+  "name": "nl.radb.gazelle",
+  "version": "1.0.0",
+  "description": "Gazelle Connected e-bike integration for Homey",
+  "main": "app.js",
+  "scripts": {
+    "build": "homey app build",
+    "start": "homey app run",
+    "deploy": "homey app install",
+    "publish": "homey app publish"
+  },
+  "author": {
+    "name": "Robert de Beurs"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "node-fetch": "^2.7.0"
+  },
+  "devDependencies": {
+    "athom-api": "^3.0.0"
+  }
+}

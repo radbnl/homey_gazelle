@@ -1,0 +1,13 @@
+{
+  "title": {
+    "en": "Battery low",
+    "nl": "Batterij bijna leeg"
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=bike"
+    }
+  ]
+}

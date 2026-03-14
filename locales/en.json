@@ -1,0 +1,7 @@
+{
+  "errors": {
+    "not_authenticated": "Not authenticated. Please re-pair the device.",
+    "token_refresh_failed": "Failed to refresh authentication. Please re-pair the device.",
+    "unauthorized": "Authentication expired. Please re-pair the device."
+  }
+}

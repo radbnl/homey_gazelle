@@ -1,0 +1,54 @@
+{
+  "name": {
+    "en": "Gazelle E-Bike",
+    "nl": "Gazelle E-Bike"
+  },
+  "class": "other",
+  "energy": {
+    "batteries": ["OTHER"]
+  },
+  "capabilities": [
+    "measure_battery",
+    "alarm_battery",
+    "meter_range",
+    "meter_odometer",
+    "charging_state",
+    "assist_level",
+    "location_latitude",
+    "location_longitude"
+  ],
+  "images": {
+    "small": "{{driverAssetsPath}}/images/small.png",
+    "large": "{{driverAssetsPath}}/images/large.png",
+    "xlarge": "{{driverAssetsPath}}/images/xlarge.png"
+  },
+  "pair": [
+    {
+      "id": "token_input"
+    },
+    {
+      "id": "list_devices",
+      "template": "list_devices",
+      "navigation": {
+        "next": "add_devices"
+      }
+    },
+    {
+      "id": "add_devices",
+      "template": "add_devices"
+    }
+  ],
+  "settings": [
+    {
+      "id": "poll_interval",
+      "type": "number",
+      "label": {
+        "en": "Update interval (minutes)",
+        "nl": "Update interval (minuten)"
+      },
+      "value": 15,
+      "min": 5,
+      "max": 60
+    }
+  ]
+}

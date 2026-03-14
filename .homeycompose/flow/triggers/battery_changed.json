@@ -1,0 +1,24 @@
+{
+  "title": {
+    "en": "Battery percentage changed",
+    "nl": "Batterij percentage veranderd"
+  },
+  "tokens": [
+    {
+      "name": "percentage",
+      "type": "number",
+      "title": {
+        "en": "Percentage",
+        "nl": "Percentage"
+      },
+      "example": 75
+    }
+  ],
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=bike"
+    }
+  ]
+}
